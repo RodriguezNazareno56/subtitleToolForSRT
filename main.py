@@ -4,29 +4,30 @@ from subtitle import Subtitle
 
 
 def main(argv):
-    if len(argv) != 1:
+    if len(argv) != 2:
         return -1
     try:
-        print('hola')
         file_path = argv[0]
-        fromManyLinesToOneLine(file_path)
+        output_name_file = argv[1]
+        fromManyLinesToOneLine(file_path, output_name_file)
     except FileNotFoundError:
-        print("Error: archivo fuente inaccesible")
+        print("Error: source file inaccessible")
         return -1
 
 
-def fromManyLinesToOneLine(file_path):
+def fromManyLinesToOneLine(file_path, output_name_file):
     subtitles = getAllSubtitles(file_path)
-    writeSubtitleFile(subtitles)
+    writeSubtitleFile(subtitles, output_name_file)
 
 
-def writeSubtitleFile(subtitles):
-    file = open('subtitle.txt', 'w')
+def writeSubtitleFile(subtitles, output_name_file):
+    file = open(output_name_file, 'w')
     for subtitle in subtitles:
-        file.write(subtitle.index)
-        file.write(subtitle.time_interval)
-        file.write(subtitle.subtitleText)
-        file.write('')
+        file.write(subtitle.index + '\n')
+        file.write(subtitle.time_interval + '\n')
+        file.write(subtitle.subtitleText + '\n')
+        file.write('\n')
+    file.close()
 
 
 def getAllSubtitles(file_path):
