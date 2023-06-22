@@ -1,6 +1,7 @@
 import logging
 
 from subtitleLine import SubtitleLine
+from translateService import TranslateService
 
 
 class SrtFile:
@@ -78,6 +79,18 @@ class SrtFile:
             file.write(subtitle.index + '\n')
             file.write(subtitle.time_interval + '\n')
             file.write(subtitle.subtitleText + '\n')
+            file.write('\n')
+        file.close()
+        return file
+
+    def write_subtitle_srt_file_with_translate(self, output_name_file):
+        translate_service = TranslateService(source="en", target="es")
+        file = open(output_name_file, 'w')
+        for subtitle in self.subtitles:
+            file.write(subtitle.index + '\n')
+            file.write(subtitle.time_interval + '\n')
+            file.write(subtitle.subtitleText + '\n')
+            file.write("<font color=\"#ffff7f\">" + translate_service.translate(subtitle.subtitleText) + "</font>\n")
             file.write('\n')
         file.close()
         return file
