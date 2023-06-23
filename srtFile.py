@@ -62,7 +62,8 @@ class SrtFile:
                         subtitle_line.set_time(line)
                         subtitle_paragraph_index += 1
 
-                    else:
+                    elif line != subtitle_line.index:
+                        # in some case, at the end of paragraph there is a line with extra index. We don't want it.
                         subtitle_line.add_text_fragment(line)
                         subtitle_paragraph_index += 1
         except FileNotFoundError:
@@ -85,12 +86,13 @@ class SrtFile:
 
     def write_subtitle_srt_file_with_translate(self, output_name_file):
         translate_service = TranslateService(source="en", target="es")
+        font_color = "55ff7f"  # 55ff7f (green) -- ffff7f (yellow)
         file = open(output_name_file, 'w')
         for subtitle in self.subtitles:
             file.write(subtitle.index + '\n')
             file.write(subtitle.time_interval + '\n')
             file.write(subtitle.subtitleText + '\n')
-            file.write("<font color=\"#ffff7f\">" + translate_service.translate(subtitle.subtitleText) + "</font>\n")
+            file.write(f"<font color=\"{font_color}\">" + translate_service.translate(subtitle.subtitleText) + "</font>\n")
             file.write('\n')
         file.close()
         return file
